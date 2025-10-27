@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id           Int      @id @default(autoincrement())
+  name         String   @unique
+  description  String?
+  returnPercent Float   @default(0)
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  categoryFees CategoryFee[]
+
+  @@map("Categories")
+}
+
+model CategoryFee {
+  id                 Int      @id @default(autoincrement())
+  categoryName       String
+  minPrice           Float
+  maxPrice           Float
+  referralFeePercent Float
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @default(now())
+
+  category           Category? @relation(fields: [categoryName], references: [name])
+
+  @@map("CategoryFees")
+}
+
+model ProductCalculation {
+  id                 Int      @id @default(autoincrement())
+  asin               String   @unique
+  productName        String
+  category           String
+  sellingPrice       Float
+  weight             Float
+  length             Float
+  width              Float
+  height             Float
+  fulfillment        String
+  stepLevel          String
+  region             String   @default("National")
+  referralFee        Float
+  closingFee         Float
+  shippingFee        Float
+  pickPackFee        Float
+  removalFee         Float
+  storageFee         Float
+  totalOtherCost     Float
+  totalFees          Float
+  taxCredit          Float
+  taxToPay           Float
+  finalWithoutTax    Float
+  netEarnings        Float
+  netEarningsPercent Float
+  returnPercent      Float    @default(0)
+  returnFees         Float    @default(0)
+  finalPayout        Float    @default(0)
+  isActive           Boolean  @default(true)
+  notes              String?
+  batchId            Int?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @default(now())
+
+  batch              ProductBatch? @relation(fields: [batchId], references: [id])
+
+  @@map("ProductCalculations")
+}
+
+model ProductBatch {
+  id          Int      @id @default(autoincrement())
+  batchName   String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  products    ProductCalculation[]
+
+  @@map("ProductBatches")
+}

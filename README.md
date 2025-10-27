@@ -256,4 +256,8 @@ A: Check browser console for errors and try refreshing the page
 
 ---
 
+<<<<<<< HEAD
 Built with ❤️ using Next.js, TypeScript, and shadcn/ui
+=======
+Built with ❤️ using Next.js, TypeScript, and shadcn/ui
+>>>>>>> 22fc113 (Initial project push)
